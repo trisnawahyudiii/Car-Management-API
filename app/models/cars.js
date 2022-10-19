@@ -11,26 +11,8 @@ module.exports = (sequelize, DataTypes) => {
             // define association here
             models.Cars.belongsTo(models.carTypes, {
                 foreignKey: 'carType',
-                as: 'car_type',
+                as: 'type',
                 onDelete: 'CASCADE',
-            });
-
-            models.Cars.belongsToMany(models.Users, {
-                foreignKey: 'createdBy',
-                as: 'CreatedBy',
-                through: 'Users',
-            });
-
-            models.Cars.belongsToMany(models.Users, {
-                foreignKey: 'updatedBy',
-                as: 'UpdatedBy',
-                through: 'Users',
-            });
-
-            models.Cars.belongsToMany(models.Users, {
-                foreignKey: 'deletedBy',
-                as: 'DeletedBy',
-                through: 'Users',
             });
         }
     }
@@ -40,14 +22,13 @@ module.exports = (sequelize, DataTypes) => {
             rentCost: DataTypes.INTEGER,
             carImage: DataTypes.STRING,
             carType: DataTypes.INTEGER,
-            createdBy: DataTypes.INTEGER,
-            updatedBy: DataTypes.INTEGER,
-            deletedby: DataTypes.INTEGER,
+            createdBy: DataTypes.STRING,
+            updatedBy: DataTypes.STRING,
+            deletedby: DataTypes.STRING,
         },
         {
             sequelize,
             paranoid: true,
-            deletedAt: 'destroyTime',
             modelName: 'Cars',
         }
     );

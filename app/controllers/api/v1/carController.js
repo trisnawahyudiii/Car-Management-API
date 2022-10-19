@@ -2,8 +2,13 @@ const carServices = require('../../../services/carServices');
 
 module.exports = {
     create(req, res) {
+        const createArgs = req.body;
+        const imgFile = req.file;
+        console.log(req.user.userName);
+        createArgs.createdBy = req.user.userName;
+
         carServices
-            .create(req.body, req.file)
+            .create(createArgs, imgFile)
             .then((car) => {
                 res.status(201).json({
                     status: 'OK',

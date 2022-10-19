@@ -7,22 +7,10 @@ module.exports = (sequelize, DataTypes) => {
             models.Users.belongsTo(models.userRoles, {
                 foreignKey: 'role',
                 as: 'UserRole',
-            });
-
-            models.Users.belongsToMany(models.Cars, {
-                foreignKey: 'createdBy',
-                as: 'CreatedBy',
-            });
-
-            models.User.belongsToMany(models.Cars, {
-                foreignKey: 'updatedBy',
-                as: 'UpdatedBy',
-            });
-
-            models.User.belongsToMany(models.Cars, {
-                foreignKey: 'deletedBy',
-                as: 'DeletedBy',
-            });
+            }); // models.Users.belongsTo(models.userRoles, {
+            //     foreignKey: 'role',
+            //     as: 'role_user',
+            // });
         }
     }
     Users.init(

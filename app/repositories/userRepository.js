@@ -6,18 +6,18 @@ module.exports = {
     },
 
     findUser(email) {
-        return User.findOne({ where: { email: email } });
+        return Users.findOne({ where: { email: email } });
     },
 
     find(id) {
         return Users.findByPk(id, {
-            include: [{ model: userRoles, as: 'role' }],
+            include: [{ model: userRoles, as: 'UserRole' }],
         });
     },
 
     findAll() {
         return Users.findAll({
-            include: [{ model: userRoles, as: 'role' }],
+            include: [{ model: userRoles, as: 'UserRole' }],
         });
     },
 

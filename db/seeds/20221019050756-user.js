@@ -1,5 +1,5 @@
 'use strict';
-const { encryptPassword } = require('../../app/utils/authorization');
+const { encryptPassword } = require('../../app/services/userServices');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

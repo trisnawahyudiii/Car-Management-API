@@ -1,6 +1,5 @@
 const cloudinary = require('cloudinary').v2;
 
-const { UPDATE } = require('sequelize/types/query-types');
 const { Cars, carTypes } = require('../models');
 
 cloudinary.config({
@@ -10,21 +9,21 @@ cloudinary.config({
 });
 
 module.exports = {
-    create(createArgs, imgFile) {
+    async create(createArgs, imgFile) {
         const fileBase64 = imgFile.buffer.toString('base64');
         const file = `data:${imgFile.mimetype};base64,${fileBase64}`;
 
-        cloudinary.uploader.upload(file, { folder: 'challenge_06' }, async function (err, result) {
-            if (!!err) {
-                console.log(err);
-                return res.status(400).json({
-                    message: 'Gagal upload file!',
-                });
-            }
-
+        try {
+            const result = await cloudinary.uploader.upload(file, { folder: 'challenge_06' });
             createArgs.carImage = result.secure_url;
+
             return Cars.create(createArgs);
-        });
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({
+                message: 'Gagal upload file!',
+            });
+        }
     },
 
     find(id) {
