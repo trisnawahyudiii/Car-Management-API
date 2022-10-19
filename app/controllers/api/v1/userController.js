@@ -1,0 +1,20 @@
+const userServices = require('../../../services/userServices');
+
+module.exports = {
+    async registerMember(req, res) {
+        userServices
+            .registerMember(req.body)
+            .then((user) => {
+                res.status(201).json({
+                    status: 'OK',
+                    data: user,
+                });
+            })
+            .catch((err) => {
+                res.status(422).json({
+                    status: 'FAIL',
+                    message: err.message,
+                });
+            });
+    },
+};

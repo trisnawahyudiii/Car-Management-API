@@ -1,0 +1,68 @@
+const cloudinary = require('cloudinary').v2;
+
+const { UPDATE } = require('sequelize/types/query-types');
+const { Cars, carTypes } = require('../models');
+
+cloudinary.config({
+    cloud_name: 'dwqgcc3se',
+    api_key: '957962481464987',
+    api_secret: 'loUEwgrDzaC3wZbJd1L050gHmig',
+});
+
+module.exports = {
+    create(createArgs, imgFile) {
+        const fileBase64 = imgFile.buffer.toString('base64');
+        const file = `data:${imgFile.mimetype};base64,${fileBase64}`;
+
+        cloudinary.uploader.upload(file, { folder: 'challenge_06' }, async function (err, result) {
+            if (!!err) {
+                console.log(err);
+                return res.status(400).json({
+                    message: 'Gagal upload file!',
+                });
+            }
+
+            createArgs.carImage = result.secure_url;
+            return Cars.create(createArgs);
+        });
+    },
+
+    find(id) {
+        return Cars.findByPk(id);
+    },
+
+    findAll() {
+        return Cars.findAll({
+            include: [{ model: carTypes, as: 'type' }],
+        });
+    },
+
+    update(id, updateArgs, imgFile) {
+        const fileBase64 = imgFile.buffer.toString('base64');
+        const file = `data:${imgFile.mimetype};base64,${fileBase64}`;
+
+        cloudinary.uploader.upload(file, { folder: 'challenge_05' }, async function (err, result) {
+            if (!!err) {
+                console.log(err);
+                return res.status(400).json({
+                    message: 'Gagal upload file!',
+                });
+            }
+
+            updateArgs.carImage = result.secure_url;
+            return Cars.update(updateArgs, {
+                where: {
+                    id: id,
+                },
+            });
+        });
+    },
+
+    delete(id) {
+        return Cars.destroy(id);
+    },
+
+    getTotalCars() {
+        return Cars.count();
+    },
+};

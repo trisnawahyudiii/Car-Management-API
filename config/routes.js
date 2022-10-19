@@ -9,6 +9,11 @@ const apiRouter = express.Router();
 // authorization
 
 // Cars
+apiRouter.post(
+    '/api/v1/cars',
+    // middleware here,
+    controllers.api.v1.carController.create
+);
 
 // swaggerUI
 

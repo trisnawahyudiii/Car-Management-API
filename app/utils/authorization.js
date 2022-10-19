@@ -35,4 +35,8 @@ module.exports = {
             expiresIn: '1h',
         });
     },
+
+    verifyToken(token) {
+        return jwt.verify(token, JWT_SIGNATURE_KEY);
+    },
 };
