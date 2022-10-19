@@ -17,4 +17,13 @@ module.exports = {
                 });
             });
     },
+
+    currentUser(req, res) {
+        const user = req.user;
+
+        res.status(201).json({
+            status: 'OK',
+            data: user,
+        });
+    },
 };

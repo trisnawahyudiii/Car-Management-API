@@ -6,12 +6,13 @@ const cloudStorage = require('./cloudStorage');
 const apiRouter = express.Router();
 
 // cek current user
+apiRouter.get('/api/v1/currentuser', middlewares.authorize, controllers.api.v1.userController.currentUser);
 
 // authorization
 apiRouter.post('/api/v1/login', controllers.api.v1.authController.login);
 
 // Cars
-apiRouter.post('/api/v1/cars', middlewares.authorizeAdmin, cloudStorage.single("carImage"), controllers.api.v1.carController.create);
+apiRouter.post('/api/v1/cars', middlewares.authorizeAdmin, cloudStorage.single('carImage'), controllers.api.v1.carController.create);
 
 // swaggerUI
 
