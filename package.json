@@ -3,6 +3,14 @@
     "version": "1.0.0",
     "main": "index.js",
     "license": "MIT",
+    "scripts": {
+        "start": "nodemon -q bin/www",
+        "db:create": "./node_modules/.bin/sequelize-cli db:create",
+        "db:drop": "./node_modules/.bin/sequelize-cli db:drop",
+        "db:migrate": "./node_modules/.bin/sequelize-cli db:migrate",
+        "db:rollback": "./node_modules/.bin/sequelize-cli db:migrate:undo",
+        "db:seed": "./node_modules/.bin/sequelize-cli db:seed:all"
+    },
     "dependencies": {
         "bcryptjs": "^2.4.3",
         "cloudinary": "^1.32.0",
