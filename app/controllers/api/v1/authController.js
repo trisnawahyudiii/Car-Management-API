@@ -3,11 +3,9 @@ const userServices = require('../../../services/userServices');
 module.exports = {
     login(req, res) {
         const { email, password } = req.body;
-        console.log('password in controller', password);
         userServices
             .login(email, password)
             .then((auth) => {
-                console.log('auth');
                 if (!auth) {
                     res.status(401).json({
                         status: 'FAIL1',

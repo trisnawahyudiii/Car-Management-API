@@ -1,5 +1,4 @@
 const cloudinary = require('cloudinary').v2;
-
 const { Cars, carTypes } = require('../models');
 
 cloudinary.config({
@@ -36,25 +35,24 @@ module.exports = {
         });
     },
 
-    update(id, updateArgs, imgFile) {
+    async update(id, updateArgs, imgFile) {
         const fileBase64 = imgFile.buffer.toString('base64');
         const file = `data:${imgFile.mimetype};base64,${fileBase64}`;
 
-        cloudinary.uploader.upload(file, { folder: 'challenge_05' }, async function (err, result) {
-            if (!!err) {
-                console.log(err);
-                return res.status(400).json({
-                    message: 'Gagal upload file!',
-                });
-            }
-
+        try {
+            const result = await cloudinary.uploader.upload(file, { folder: 'challenge_06' });
             updateArgs.carImage = result.secure_url;
+
             return Cars.update(updateArgs, {
-                where: {
-                    id: id,
-                },
+                where: { id: id },
+                returning: true,
             });
-        });
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({
+                message: 'Gagal upload file!',
+            });
+        }
     },
 
     delete(id) {

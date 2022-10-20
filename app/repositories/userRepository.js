@@ -2,7 +2,7 @@ const { Users, userRoles } = require('../models');
 
 module.exports = {
     create(registerArgs) {
-        return Users.create(creaArgs);
+        return Users.create(registerArgs);
     },
 
     findUser(email) {

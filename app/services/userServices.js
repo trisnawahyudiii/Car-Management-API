@@ -42,8 +42,24 @@ module.exports = {
             const body = {
                 userName: registerArgs.userName,
                 email: registerArgs.email,
-                password: encryptPassword,
+                password: encryptedPassword,
                 role: 3,
+            };
+
+            return userRepository.create(body);
+        } catch (err) {
+            throw err;
+        }
+    },
+
+    async registerAdmin(registerArgs) {
+        try {
+            const encryptedPassword = await encryptPassword(registerArgs.password);
+            const body = {
+                userName: registerArgs.userName,
+                email: registerArgs.email,
+                password: encryptedPassword,
+                role: 2,
             };
 
             return userRepository.create(body);
@@ -54,27 +70,33 @@ module.exports = {
 
     async login(email, password) {
         try {
-            const user = await userRepository.findUser(email);
-            if (!user) {
+            const data = await userRepository.findUser(email);
+            if (!data) {
                 return false;
             }
 
-            const encryptedPassword = user.dataValues.password;
+            const encryptedPassword = data.dataValues.password;
 
             const isAuthenticated = await comparePassword(password, encryptedPassword);
-            console.log(isAuthenticated);
             if (!isAuthenticated) {
                 return false;
             }
 
             // generate JWT
             const token = createToken({
-                id: user.id,
-                email: user.email,
-                role: user.role,
+                id: data.id,
+                email: data.email,
+                role: data.role,
             });
 
-            user.dataValues.token = token;
+            console.log(data);
+            // extract only username, email, role, rolename
+            const user = {
+                userName: data.dataValues.userName,
+                email: data.dataValues.email,
+                role: data.dataValues.role,
+                token: token,
+            };
 
             return user;
         } catch (err) {

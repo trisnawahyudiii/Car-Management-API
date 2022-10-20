@@ -18,6 +18,23 @@ module.exports = {
             });
     },
 
+    async registerAdmin(req, res) {
+        userServices
+            .registerAdmin(req.body)
+            .then((user) => {
+                res.status(201).json({
+                    status: 'OK',
+                    data: user,
+                });
+            })
+            .catch((err) => {
+                res.status(422).json({
+                    status: 'FAIL',
+                    message: err.message,
+                });
+            });
+    },
+
     currentUser(req, res) {
         const user = req.user;
 

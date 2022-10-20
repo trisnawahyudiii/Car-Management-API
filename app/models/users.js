@@ -7,10 +7,7 @@ module.exports = (sequelize, DataTypes) => {
             models.Users.belongsTo(models.userRoles, {
                 foreignKey: 'role',
                 as: 'UserRole',
-            }); // models.Users.belongsTo(models.userRoles, {
-            //     foreignKey: 'role',
-            //     as: 'role_user',
-            // });
+            });
         }
     }
     Users.init(
