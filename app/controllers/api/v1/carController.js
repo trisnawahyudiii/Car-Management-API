@@ -52,14 +52,13 @@ module.exports = {
                 message: err.message,
             });
         } else {
-            const { createdBy } = car;
-
             const updateArgs = {
                 ...req.body,
-                createdBy: createdBy,
                 updatedBy: req.user.userName,
             };
 
+            
+            
             carServices
                 .update(id, updateArgs, imgFile)
                 .then((car) => {

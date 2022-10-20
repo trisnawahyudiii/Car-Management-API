@@ -19,7 +19,7 @@ apiRouter.get('/api/v1/cars', controllers.api.v1.carController.list);
 apiRouter.put('/api/v1/updateCar/:id', middlewares.authorizeAdmin, cloudStorage.single('carImage'), controllers.api.v1.carController.update);
 apiRouter.delete('/api/v1/cars/:id', middlewares.authorizeAdmin, controllers.api.v1.carController.delete);
 
-// swaggerUI
+// swaggerUI OpenAPI
 
 apiRouter.use(controllers.api.main.onLost);
 apiRouter.use(controllers.api.main.onError);

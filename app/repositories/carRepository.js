@@ -39,6 +39,16 @@ module.exports = {
         const fileBase64 = imgFile.buffer.toString('base64');
         const file = `data:${imgFile.mimetype};base64,${fileBase64}`;
 
+        // delete old image on cliudinary
+        const car = await Cars.findByPk(id);
+
+        const imageUrl = car.dataValues.carImage;
+        const folder = imageUrl.split('/')[7];
+        const publicId = imageUrl.split('/')[8].split('.')[0];
+
+        cloudinary.uploader.destroy(`${folder}/${publicId}`);
+
+        // upload new image
         try {
             const result = await cloudinary.uploader.upload(file, { folder: 'challenge_06' });
             updateArgs.carImage = result.secure_url;
