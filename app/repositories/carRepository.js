@@ -55,8 +55,9 @@ module.exports = {
         }
     },
 
-    delete(id) {
-        return Cars.destroy(id);
+    async delete(id, deleteArgs) {
+        Cars.update(deleteArgs, { where: { id: id } });
+        return Cars.destroy({ where: { id: id } });
     },
 
     getTotalCars() {

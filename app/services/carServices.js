@@ -27,7 +27,7 @@ module.exports = {
         return carRepository.update(id, updateArgs, imgFile);
     },
 
-    delete(id) {
-        return carRepository.delete(id);
+    delete(id, deleteArgs) {
+        return carRepository.delete(id, deleteArgs);
     },
 };

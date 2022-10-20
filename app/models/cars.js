@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
             carType: DataTypes.INTEGER,
             createdBy: DataTypes.STRING,
             updatedBy: DataTypes.STRING,
-            deletedby: DataTypes.STRING,
+            deletedBy: DataTypes.STRING,
         },
         {
             sequelize,

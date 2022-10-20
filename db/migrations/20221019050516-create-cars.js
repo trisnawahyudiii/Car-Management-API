@@ -31,7 +31,7 @@ module.exports = {
             updatedBy: {
                 type: Sequelize.STRING,
             },
-            deletedby: {
+            deletedBy: {
                 type: Sequelize.STRING,
             },
             createdAt: {
