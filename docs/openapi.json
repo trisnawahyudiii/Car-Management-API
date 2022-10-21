@@ -1,0 +1,1199 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Car Management API",
+    "description": "Challenge-06 Fullstack Web Development Binar Academy x KM3. \n\n This project was created to fulfill the assessment of chapter-6 which contains a RESTFULL API built with expressJS combined with SwaggerUI for API documentation. check this [repository](http:https://github.com/trisnawahyudiii/challege-06) for the Project Files.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Login or Register"
+    },
+    {
+      "name": "Users",
+      "description": "Tag Users"
+    },
+    {
+      "name": "Cars",
+      "description": "Tag Cars"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "Login Users (Member, Admin, Super Admin)",
+        "description": "Login for Users",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/JSON": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "wayantrisna79@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "admin123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "userName": {
+                          "type": "string",
+                          "example": "trisnawyd_"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "wayantrisna79@gmail.com"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "superAdmin"
+                        },
+                        "token": {
+                          "type": "string",
+                          "example": "xxx_xxx"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User login fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Password is incorrect!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User login fail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email is not registered!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "summary": "Create a new member account",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userName": {
+                    "type": "string",
+                    "example": "trisnawyd_"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "wayantrisna79@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "admin123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Register success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "userName": {
+                          "type": "string",
+                          "example": "trisnawyd_"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "wayantrisna79@gmail.com"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "Member"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2022-10-20T18:21:05.238Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2022-10-20T18:21:05.238Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "failed to create member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email already registered!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed to create member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Missing userName fileds!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/createAdmin": {
+      "post": {
+        "summary": "Create a new admin account",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userName": {
+                    "type": "string",
+                    "example": "trisnawyd_"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "wayantrisna79@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "admin123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Register success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "userName": {
+                          "type": "string",
+                          "example": "trisnawyd_"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "wayantrisna79@gmail.com"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "Admin"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2022-10-20T18:21:05.238Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2022-10-20T18:21:05.238Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "failed to create member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email already registered!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed to create member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Missing userName fileds!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/cars": {
+      "post": {
+        "summary": "Create new car data",
+        "tags": [
+          "Cars"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "carName": {
+                    "type": "string",
+                    "example": "Ford F150"
+                  },
+                  "rentCost": {
+                    "type": "integer",
+                    "example": 100000
+                  },
+                  "carImage": {
+                    "type": "string",
+                    "format": "binary",
+                    "example": "car1.jpg"
+                  },
+                  "carType": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "carName": {
+                          "type": "string",
+                          "example": "Ford F150"
+                        },
+                        "rentCost": {
+                          "type": "integer",
+                          "example": 100000
+                        },
+                        "carImage": {
+                          "type": "string",
+                          "example": "https://res.cloudinary.com/dwqgcc3se/image/upload/v1666287129/challenge_06/mt2hths6ksledahtrflx.jpg"
+                        },
+                        "carType": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "createdBy": {
+                          "type": "string",
+                          "example": "trisnawyd_"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2022-10-21T10:12:38.892Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2022-10-21T10:12:38.892Z"
+                        },
+                        "updatedBy": {
+                          "type": "string",
+                          "example": "null"
+                        },
+                        "deletedBy": {
+                          "type": "string",
+                          "example": "null"
+                        },
+                        "deletedAt": {
+                          "type": "string",
+                          "example": "null"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed to upload image",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Gagal uplaod file!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Current user is not admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Forbidden, Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/listCars": {
+      "get": {
+        "summary": "Returns a list of cars",
+        "description": "List cars",
+        "tags": [
+          "Cars"
+        ],
+        "responses": {
+          "200": {
+            "description": "array of cars in JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "cars": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "carName": {
+                                "type": "string",
+                                "example": "Ford F150"
+                              },
+                              "rentCost": {
+                                "type": "integer",
+                                "example": 100000
+                              },
+                              "carImage": {
+                                "type": "string",
+                                "example": "https://res.cloudinary.com/dwqgcc3se/image/upload/v1666287129/challenge_06/mt2hths6ksledahtrflx.jpg"
+                              },
+                              "carType": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "createdBy": {
+                                "type": "string",
+                                "example": "trisnawyd_"
+                              },
+                              "updatedBy": {
+                                "type": "string",
+                                "example": "null"
+                              },
+                              "deletedBy": {
+                                "type": "string",
+                                "example": "null"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "example": "2022-10-21T10:12:38.892Z"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2022-10-21T10:12:38.892Z"
+                              },
+                              "deletedAt": {
+                                "type": "string",
+                                "example": "null"
+                              },
+                              "type": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "example": "Medium"
+                                  },
+                                  "updatedAt": {
+                                    "type": "string",
+                                    "example": "2022-10-21T10:12:38.892Z"
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "example": "2022-10-21T10:12:38.892Z"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unkown error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed to get cars due to no cars on database",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No car found on database"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/car/update/{id}": {
+      "put": {
+        "summary": "Update car data by ID",
+        "tags": [
+          "Cars"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Object cars",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "carName": {
+                    "type": "string",
+                    "example": "Ford F150"
+                  },
+                  "rentCost": {
+                    "type": "integer",
+                    "example": 100000
+                  },
+                  "carImage": {
+                    "type": "string",
+                    "format": "binary",
+                    "example": "car1.jpg"
+                  },
+                  "carType": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Data updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "status": {
+                                  "type": "string",
+                                  "example": "OK"
+                                },
+                                "data": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 1
+                                    },
+                                    "carName": {
+                                      "type": "string",
+                                      "example": "Ford F150"
+                                    },
+                                    "rentCost": {
+                                      "type": "integer",
+                                      "example": 100000
+                                    },
+                                    "carImage": {
+                                      "type": "string",
+                                      "example": "https://res.cloudinary.com/dwqgcc3se/image/upload/v1666287129/challenge_06/mt2hths6ksledahtrflx.jpg"
+                                    },
+                                    "carType": {
+                                      "type": "integer",
+                                      "example": 1
+                                    },
+                                    "createdBy": {
+                                      "type": "string",
+                                      "example": "trisnawyd_"
+                                    },
+                                    "updatedBy": {
+                                      "type": "string",
+                                      "example": "trisnawyd_"
+                                    },
+                                    "deletedBy": {
+                                      "type": "string",
+                                      "example": "null"
+                                    },
+                                    "updatedAt": {
+                                      "type": "string",
+                                      "example": "2022-10-21T10:12:38.892Z"
+                                    },
+                                    "createdAt": {
+                                      "type": "string",
+                                      "example": "2022-10-21T10:12:38.892Z"
+                                    },
+                                    "deletedAt": {
+                                      "type": "string",
+                                      "example": "null"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed to upload image",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Gagal upload file!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Car not found!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/car/delete/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true,
+          "description": "The car ID."
+        }
+      ],
+      "delete": {
+        "summary": "Delete car by ID",
+        "tags": [
+          "Cars"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully delete car data (soft delete)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Car deleted successfully!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Car not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "error.message"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/cars/{id}/restore": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true,
+          "description": "The car ID."
+        }
+      ],
+      "put": {
+        "summary": "Restore car by ID",
+        "tags": [
+          "Cars"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully restore car data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Car restored successfully!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Car not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "FAIL"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "error.message"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/getCurrentUser": {
+      "get": {
+        "summary": "Returns current user by bearer token",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "user data in JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "userName": {
+                          "type": "string",
+                          "example": "trisnawyd_"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "wayantrisna79@gmail.com"
+                        },
+                        "role": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "roleName": {
+                          "type": "string",
+                          "example": "superAdmin"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
