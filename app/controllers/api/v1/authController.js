@@ -8,8 +8,8 @@ module.exports = {
             .then((auth) => {
                 if (!auth) {
                     res.status(401).json({
-                        status: 'FAIL1',
-                        message: 'email or password is incorrect!',
+                        status: 'FAIL',
+                        message: err.message,
                     });
                 }
 
@@ -19,10 +19,43 @@ module.exports = {
                 });
             })
             .catch((err) => {
-                res.status(400).json({
-                    status: 'FAIL2',
+                res.status(404).json({
+                    status: 'FAIL',
                     message: err.message,
                 });
             });
+    },
+
+    async register(req, res) {
+        if (!req.body.userName || !req.body.email || !req.body.password) {
+            const errMessage = handleInput(req.body.userName, req.body.email, req.body.password);
+
+            return res.status(422).json({
+                status: 'FAIL',
+                message: errMessage,
+            });
+        } else {
+            userServices
+                .registerMember(req.body)
+                .then((user) => {
+                    res.status(201).json({
+                        status: 'OK',
+                        data: {
+                            id: user.id,
+                            userName: user.userName,
+                            email: user.email,
+                            role: user.UserRole.roleName,
+                            createdAt: user.createdAt,
+                            updatedAt: user.updatedAt,
+                        },
+                    });
+                })
+                .catch((err) => {
+                    res.status(409).json({
+                        status: 'FAIL',
+                        message: err.message,
+                    });
+                });
+        }
     },
 };

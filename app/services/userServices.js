@@ -38,6 +38,14 @@ module.exports = {
 
     async registerMember(registerArgs) {
         try {
+            const user = await userRepository.findUser(registerArgs.email);
+
+            if (user) {
+                throw new Error('Email already Registered!');
+            } else if (user.userName === registerArgs.userName) {
+                throw new Error('Username already taken!');
+            }
+
             const encryptedPassword = await encryptPassword(registerArgs.password);
             const body = {
                 userName: registerArgs.userName,
@@ -54,6 +62,14 @@ module.exports = {
 
     async registerAdmin(registerArgs) {
         try {
+            const user = await userRepository.findUser(registerArgs.email);
+
+            if (user) {
+                throw new Error('Email already Registered!');
+            } else if (user.userName === registerArgs.userName) {
+                throw new Error('Username already taken!');
+            }
+
             const encryptedPassword = await encryptPassword(registerArgs.password);
             const body = {
                 userName: registerArgs.userName,
@@ -72,14 +88,14 @@ module.exports = {
         try {
             const data = await userRepository.findUser(email);
             if (!data) {
-                return false;
+                throw new Error('Email is not registered!');
             }
 
             const encryptedPassword = data.dataValues.password;
 
             const isAuthenticated = await comparePassword(password, encryptedPassword);
             if (!isAuthenticated) {
-                return false;
+                throw new Error('Password is incorrect!');
             }
 
             // generate JWT
@@ -89,12 +105,12 @@ module.exports = {
                 role: data.role,
             });
 
-            console.log(data);
+            console.log(data.UserRole.roleName);
             // extract only username, email, role, rolename
             const user = {
-                userName: data.dataValues.userName,
-                email: data.dataValues.email,
-                role: data.dataValues.role,
+                userName: data.userName,
+                email: data.email,
+                role: data.UserRole.roleName,
                 token: token,
             };
 

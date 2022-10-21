@@ -1,12 +1,21 @@
 const { Users, userRoles } = require('../models');
 
 module.exports = {
-    create(registerArgs) {
-        return Users.create(registerArgs);
+    async create(registerArgs) {
+        return Users.create(registerArgs)
+            .then((newUser) => {
+                return Users.findByPk(newUser.id, {
+                    include: [{ model: userRoles, as: 'UserRole' }],
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+                throw err;
+            });
     },
 
     findUser(email) {
-        return Users.findOne({ where: { email: email } });
+        return Users.findOne({ where: { email: email }, include: [{ model: userRoles, as: 'UserRole' }] });
     },
 
     find(id) {

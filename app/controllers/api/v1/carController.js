@@ -47,9 +47,9 @@ module.exports = {
         const car = carServices.get(id);
 
         if (!car) {
-            return res.status(422).json({
+            return res.status(404).json({
                 status: 'FAIL',
-                message: err.message,
+                message: 'Car not found!',
             });
         } else {
             const updateArgs = {
@@ -57,8 +57,6 @@ module.exports = {
                 updatedBy: req.user.userName,
             };
 
-            
-            
             carServices
                 .update(id, updateArgs, imgFile)
                 .then((car) => {
