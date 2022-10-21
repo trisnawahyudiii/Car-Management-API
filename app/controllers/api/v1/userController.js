@@ -51,7 +51,7 @@ module.exports = {
                     });
                 })
                 .catch((err) => {
-                    res.status(422).json({
+                    res.status(409).json({
                         status: 'FAIL',
                         message: err.message,
                     });
@@ -59,12 +59,19 @@ module.exports = {
         }
     },
 
-    currentUser(req, res) {
+    getCurrentUser(req, res) {
         const user = req.user;
 
-        res.status(201).json({
-            status: 'OK',
-            data: user,
-        });
+        if (user) {
+            res.status(200).json({
+                status: 'OK',
+                data: user,
+            });
+        } else {
+            res.status(401).json({
+                status: 'FAIL',
+                message: 'Unauthorized',
+            });
+        }
     },
 };

@@ -60,14 +60,37 @@ module.exports = {
         } catch (err) {
             console.log(err);
             return res.status(400).json({
+                status: 'FAIL',
                 message: 'Gagal upload file!',
             });
         }
     },
 
     async delete(id, deleteArgs) {
-        Cars.update(deleteArgs, { where: { id: id } });
-        return Cars.destroy({ where: { id: id } });
+        try {
+            await Cars.update(deleteArgs, { where: { id: id } });
+            return Cars.destroy({ where: { id: id } });
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    async restore(id) {
+        const exist = await Cars.findByPk(id, { paranoid: false });
+
+        if (!exist) {
+            throw new Error('Car not found');
+        } else if (!exist.deletedAt) {
+            throw new Error('Car already exist');
+        } else {
+            const restoreArgs = {
+                deletedBy: null,
+                deletedAt: null,
+            };
+
+            Cars.update(restoreArgs, { where: { id: id } });
+            return Cars.restore({ where: { id: id } });
+        }
     },
 
     getTotalCars() {

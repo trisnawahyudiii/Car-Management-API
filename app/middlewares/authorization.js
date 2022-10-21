@@ -12,6 +12,7 @@ module.exports = {
 
             // username, email, role, rolename
             const user = {
+                id: data.id,
                 userName: data.userName,
                 email: data.email,
                 role: data.role,
@@ -33,11 +34,19 @@ module.exports = {
     async authorizeAdmin(req, res, next) {
         try {
             const bearerToken = req.headers.authorization;
+            if (!bearerToken) {
+                res.status(401).json({
+                    status: 'FAIL',
+                    message: 'Unauthorized',
+                });
+                return;
+            }
             const token = bearerToken.split('Bearer ')[1];
             const payload = userServices.verifyToken(token);
 
             if (payload.role !== 2 && payload.role !== 1) {
                 res.status(403).json({
+                    status: 'FAIL',
                     message: 'Forbidden, Access denied',
                 });
                 return;

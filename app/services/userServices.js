@@ -108,6 +108,7 @@ module.exports = {
             console.log(data.UserRole.roleName);
             // extract only username, email, role, rolename
             const user = {
+                id: data.id,
                 userName: data.userName,
                 email: data.email,
                 role: data.UserRole.roleName,

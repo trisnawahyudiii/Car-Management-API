@@ -30,4 +30,8 @@ module.exports = {
     delete(id, deleteArgs) {
         return carRepository.delete(id, deleteArgs);
     },
+
+    restore(id) {
+        return carRepository.restore(id);
+    },
 };

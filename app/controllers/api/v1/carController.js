@@ -27,11 +27,18 @@ module.exports = {
         carServices
             .list()
             .then(({ data, count }) => {
-                res.status(200).json({
-                    status: 'OK',
-                    data: { cars: data },
-                    meta: { total: count },
-                });
+                if (count === 0) {
+                    res.status(404).json({
+                        status: 'FAIL',
+                        message: 'No car found on database',
+                    });
+                } else {
+                    res.status(200).json({
+                        status: 'OK',
+                        data: { cars: data },
+                        meta: { total: count },
+                    });
+                }
             })
             .catch((err) => {
                 res.status(400).json({
@@ -84,17 +91,17 @@ module.exports = {
         const car = carServices.get(id);
 
         if (!car) {
-            return res.status(422).json({
+            return res.status(404).json({
                 status: 'FAIL',
-                message: err.message,
+                message: '  ',
             });
         } else {
             carServices
                 .delete(id, deleteArgs)
-                .then((car) => {
-                    res.status(204).json({
+                .then(() => {
+                    res.status(200).json({
                         status: 'OK',
-                        message: `Car ${car.carName} deleted successfully!`,
+                        message: 'Car deleted successfully!',
                     });
                 })
                 .catch((err) => {
@@ -104,5 +111,35 @@ module.exports = {
                     });
                 });
         }
+    },
+
+    restore(req, res) {
+        const id = req.params.id;
+        carServices
+            .restore(id)
+            .then(() => {
+                res.status(200).json({
+                    status: 'OK',
+                    message: `Car restored successfully!`,
+                });
+            })
+            .catch((err) => {
+                if (err.message === 'Car not found') {
+                    res.status(404).json({
+                        status: 'FAIL',
+                        message: err.message,
+                    });
+                } else if (err.message === 'Car already exist') {
+                    res.status(409).json({
+                        status: 'FAIL',
+                        message: err.message,
+                    });
+                } else {
+                    res.status(422).json({
+                        status: 'FAIL',
+                        message: err.message,
+                    });
+                }
+            });
     },
 };
